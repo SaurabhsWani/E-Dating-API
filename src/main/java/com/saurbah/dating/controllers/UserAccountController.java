@@ -21,7 +21,7 @@ import com.saurbah.dating.repos.UserAccountRepository;
 public class UserAccountController {
 	@Autowired
 	private UserAccountRepository userRepo;
-	
+
 	@Autowired
 	private InterestRepostiry interestRepo;
 
@@ -30,21 +30,28 @@ public class UserAccountController {
 		System.out.println(userAccount);
 		return userRepo.save(userAccount);
 	}
-	
+
 	@PostMapping("/interest/update")
 	public Interest updateInterest(@RequestBody Interest interest) {
 		UserAccount userAccount = userRepo.findById(interest.getUserAccountId()).get();
 		interest.setUserAccount(userAccount);
 		return interestRepo.save(interest);
 	}
-	
+
 	@GetMapping("/users/get/all")
-	public List<UserAccount> getAllUserAccounts(){
+	public List<UserAccount> getAllUserAccounts() {
 		return userRepo.findAll();
 	}
-	
+
 	@DeleteMapping("/users/delete/{interestId}")
 	public void deleteInterest(@PathVariable("interestId") int id) {
 		interestRepo.deleteById(id);
+	}
+
+	@GetMapping("/users/matches/{userId}")
+	public List<UserAccount> findMatches(@PathVariable("userId") int id) {
+		UserAccount userAccount = userRepo.findById(id).get();
+		return userRepo.findMatches(userAccount.getAge(), userAccount.getCity(), userAccount.getCountry(), id);
+
 	}
 }
