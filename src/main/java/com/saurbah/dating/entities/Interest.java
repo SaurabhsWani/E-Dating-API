@@ -1,11 +1,14 @@
 package com.saurbah.dating.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,8 +29,11 @@ public class Interest {
 	private String profileUrl;
 	private String about;
 
+	@Transient
+	private int userAccountId;
 	@OneToOne
 	@JoinColumn(name = "user_id")
+	@JsonIgnore
 	private UserAccount userAccount;
 
 }
